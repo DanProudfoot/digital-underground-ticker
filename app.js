@@ -1,5 +1,5 @@
 var json = require('jsonfile');
-var T = require('twit');
+var Twit = require('twit');
 var express = require('express');
 var BodyParser = require('body-parser');
 var cors = require('cors');
@@ -11,6 +11,13 @@ var router = express.Router();
 
 app.use(BodyParser.urlencoded({extended: false}));
 app.use(cors());
+
+var T = new Twit({
+	consumer_key:'...'
+	, consumer_secret:'...'
+	, access_token:'...'
+	, access_token_secret:'...'
+})
 
 var messages = [];
 var defaultMessages = [
@@ -44,14 +51,13 @@ app.get('/', function(req, res){
 		res.send(messages[0].message);
 		console.log(messages);
 		
-		if (messages[0].keep == 1){
-			console.log(messages[0]);
-			messages[0].keep = 0;
-			messages.move(0,messages.length -1 );	
+		if (messages[0].keep > 0){
+			messages[0].keep --;
+			messages.move(0,messages.length );	
 		} else if (messages[0].keep == 0) {
 			messages.splice(0,1);
 		} else if (messages[0].keep == -1){
-
+			messages.move(0,messages.length );	
 		}
 
 	} else {

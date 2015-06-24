@@ -16,7 +16,7 @@ $(window).load(function() {
 			})
 
 			.marquee({
-				duration: 7000
+				duration: 3000
 			});	
 	}
 
