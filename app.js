@@ -4,7 +4,8 @@ var express = require('express');
 var BodyParser = require('body-parser');
 var cors = require('cors');
 
-var file = './list.json';
+// var file = './list.json';
+var cred = require('./credentials');
 
 var app = express();
 var router = express.Router();
@@ -13,17 +14,18 @@ app.use(BodyParser.urlencoded({extended: false}));
 app.use(cors());
 
 var T = new Twit({
-	consumer_key:'...'
-	, consumer_secret:'...'
-	, access_token:'...'
-	, access_token_secret:'...'
+	consumer_key: cred.consumer_key,
+	consumer_secret: cred.consumer_secret,
+	access_token: cred.access_token,
+	access_token_secret: cred.access_token_secret
 })
 
 var messages = [];
 var defaultMessages = [
-	"Here's a test one",
-	"Here's another test",
-	"Here's the final one"
+	"Welcome to Digital Underground!",
+	"Digital Underground - the Digital Media Design grad show!",
+	"We're open Thurs 16th and Fri 17th, 11am - 6pm",
+	"Tweet us with the hashtag #BUdigital"
 ];
 
 Array.prototype.move = function(from, to) {
@@ -33,7 +35,8 @@ Array.prototype.move = function(from, to) {
 function pusher(message, keep){
 	messages.push({
 		message:message,
-		keep: keep
+		keep: keep,
+		tweet: false
 	});
 	// json.writeFile(file,messages,function(err){
 	// 	if (err){ 
@@ -45,10 +48,36 @@ function pusher(message, keep){
 	// })
 }
 
+var tweetFire = 5;
+var tweetIteration = tweetFire;
+var twitterQuery = "#BUdigital"
+
+function twitGet(){
+	if (tweetIteration == 0 ){
+		T.get('search/tweets', { q: twitterQuery, count: 1}, function(err, data, response){
+			messages.push({
+				message: data.statuses[0].text,
+				keep: 0,
+				tweet: true
+			})
+		});
+		tweetIteration = tweetFire;
+	} else {
+		tweetIteration--;
+	}
+	
+}
+
 app.get('/', function(req, res){
 	
+	twitGet();
+
 	if (!messages.length == 0) {
-		res.send(messages[0].message);
+		
+		res.send({
+			text: messages[0].message,
+			tweet: messages[0].tweet
+		});
 		console.log(messages);
 		
 		if (messages[0].keep > 0){
@@ -62,7 +91,10 @@ app.get('/', function(req, res){
 
 	} else {
 		var rand = Math.floor(Math.random() * defaultMessages.length);
-		res.send(defaultMessages[rand]);
+		res.send({
+			text: defaultMessages[rand],
+			tweet: false
+		});
 	}
 });
 
