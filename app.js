@@ -68,6 +68,12 @@ function twitGet(){
 	
 }
 
+app.use(express.static(__dirname + '/public'));
+
+app.get('/ticker', function(req, res){
+	res.render('ticker.html')
+})
+
 app.get('/', function(req, res){
 	
 	twitGet();
