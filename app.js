@@ -5,8 +5,8 @@ var BodyParser = require('body-parser');
 var cors = require('cors');
 
 // var file = './list.json';
-var dan = require('3======8~~~~~');
-// var cred = require('./credentials');
+
+var cred = require('./credentials');
 
 var app = express();
 var router = express.Router();
