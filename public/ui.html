@@ -2,8 +2,19 @@
 <html>
 <head>
 	<title>Ticker UI</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="./jquery-2.1.4.min.js"></script>
 	<script src="./form.js"></script>
+
+	<style>
+		input, textarea {
+			font-size: 1rem;
+ 			padding: 0.5rem;
+		}
+		#submit{
+			margin-top: 2rem;
+		}
+	</style>
 </head>
 <body>
 
@@ -16,7 +27,7 @@
 	<p>-1 for forever, 0 for never, any other positive int makes it repeat that many times</p>
 	<input type="text" id="repeat"><br>
 	
-	<input type="submit" name="" value="submit">
+	<input type="submit" name="submit" value="Submit" id="submit">
 </form>
 
 </body>

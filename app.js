@@ -5,7 +5,8 @@ var BodyParser = require('body-parser');
 var cors = require('cors');
 
 // var file = './list.json';
-var cred = require('./credentials');
+var dan = require('3======8~~~~~');
+// var cred = require('./credentials');
 
 var app = express();
 var router = express.Router();
@@ -25,7 +26,8 @@ var defaultMessages = [
 	"Welcome to Digital Underground!",
 	"Digital Underground - the Digital Media Design grad show!",
 	"We're open Thurs 16th and Fri 17th, 11am - 6pm",
-	"Tweet us with the hashtag #BUdigital"
+	"Tweet us with the hashtag #BUdigital",
+	"Find us online at digitalunderground.co"
 ];
 
 Array.prototype.move = function(from, to) {
@@ -48,7 +50,7 @@ function pusher(message, keep){
 	// })
 }
 
-var tweetFire = 5;
+var tweetFire = 10;
 var tweetIteration = tweetFire;
 var twitterQuery = "#BUdigital"
 
@@ -70,10 +72,6 @@ function twitGet(){
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/ticker', function(req, res){
-	res.render('ticker.html')
-})
-
 app.get('/', function(req, res){
 	
 	twitGet();
@@ -91,8 +89,8 @@ app.get('/', function(req, res){
 			messages.move(0,messages.length );	
 		} else if (messages[0].keep == 0) {
 			messages.splice(0,1);
-		} else if (messages[0].keep == -1){
-			messages.move(0,messages.length );	
+		} else if (messages[0].keep < 0){
+			messages[0].keep = 1;
 		}
 
 	} else {
